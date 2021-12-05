@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  <title>Item Lister</title>
+</head>
+<body>
+  <header id="main-header" class="bg-success text-white p-4 mb-3">
+    <div class="container">
+     <div class="row">
+         <div class="col-md-6">
+             <h1 id="header-title">Item Lister <span style="display:none">123</span></h1>
+         </div>
+         <div class="col-md-6 align-self-center">
+             <input type="text" class="form-control" id="filter" placeholder="Search Items">
+         </div>
+     </div>
+      
+    </div>
+  </header>
+  <div class="container">
+   <div id="main" class="card card-body">
+    <h2 class="title">Add Items</h2>
+    <form id="addform" class="form-inline mb-3">
+      <input type="text" class="form-control mr-2" id="itemName">
+<!--
+      <select class="form-control mr-2">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+      </select>
+-->
+      <input type="submit" class="btn btn-dark" value="Submit" id="submitButton">
+    </form>
+    <h2 class="title">Items</h2>
+    <ul id="items" class="list-group">
+      <li class="list-group-item">Item 1
+          <button class="btn btn-danger float-right btn-sm delete">X</button>
+      </li>
+      <li class="list-group-item">Item 2
+          <button class="btn btn-danger float-right btn-sm delete">X</button>
+      </li>
+      <li class="list-group-item">Item 3
+          <button class="btn btn-danger float-right btn-sm delete">X</button>
+      </li>
+      <li class="list-group-item">Item 4
+          <button class="btn btn-danger float-right btn-sm delete">X</button>
+      </li>
+    </ul>
+    <div id="output"></div>
+    <br>
+    <button class="btn btn-dark btn-block" id="button">Click Here</button>
+    <br>
+<!--
+    <div id="box" style="width:400px;height:200px;background:#f4f4f4"><h3>HELLO</h3></div>-->
+   </div>
+
+  </div>
+
+  <script>
+     var submitBtn = document.getElementById('submitButton');
+var itemList = document.getElementById('items');
+var filter = document.getElementById('filter');
+
+// Form Submit Event
+submitBtn.addEventListener('click',addItem);
+// Item Delete Event
+itemList.addEventListener('click',delItem);
+// Filter Event
+filter.addEventListener('keyup', filterItems);
+
+function addItem(e){
+    e.preventDefault();
+//    console.log("hi");
+    var itemName = document.getElementById('itemName').value;
+//    console.log(itemName);
+    
+    // Create a li element 
+    var li = document.createElement('li');
+    
+    // add classes to the li element
+    li.className = "list-group-item";
+    
+    // create a textNode 
+    var liText = document.createTextNode(itemName);
+    
+    // append the textNode in the li element
+    li.appendChild(liText);
+    
+    // append the li element to the list
+    document.getElementById('items').appendChild(li);    
+    
+    //create a button element
+    var delBtn = document.createElement('button');
+    
+    // add classes to the button 
+    delBtn.className = "btn btn-danger float-right btn-sm delete";
+    
+    // create a textNode for button element
+    var btnText = document.createTextNode('X');
+    
+    // append the text node to the button element
+    delBtn.appendChild(btnText);
+    
+    // append the button to the li element
+    li.appendChild(delBtn);
+}
+
+// Function for Delete Item
+function delItem(e){
+    if(e.target.classList.contains('delete')){
+        if(confirm('Are You Sure To Delete This Item ?')){
+            var li = e.target.parentElement;
+            itemList.removeChild(li);
+        }
+    }
+}
+
+// Function for Filter Items
+function filterItems(e){
+    // Convert Text to Lower Case
+    var text = e.target.value.toLowerCase();
+    
+    // Get all the li's
+    var items = itemList.getElementsByTagName('li');
+//    console.log(items);
+    
+    // Convert to an array, the HTML Collection which we got in above step which is stored in items
+    Array.from(items).forEach(function(item){
+        var itemName = item.firstChild.textContent;
+        if(itemName.toLowerCase().indexOf(text) != -1){
+            item.style.display = 'block';
+        }else {
+            item.style.display = 'none';
+        }
+    })
+    
+}
+  </script>
+</body>
+</html>
